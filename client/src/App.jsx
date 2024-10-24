@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -14,8 +15,12 @@ import UpdatePost from './pages/UpdatePost';
 import PostPage from './pages/PostPage';
 import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
+import { useTranslation } from 'react-i18next';
+import './i18n'; // Assurez-vous d'importer votre configuration i18n
 
 export default function App() {
+  const { t } = useTranslation();
+
   return (
     <BrowserRouter>
       <ScrollToTop />

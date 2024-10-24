@@ -7,15 +7,12 @@ export default function FooterCom() {
       <div className='w-full max-w-7xl mx-auto'>
         <div className='grid w-full justify-between sm:flex md:grid-cols-1'>
           <div className='mt-5'>
-            <Link
-              to='/'
-              className='self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white'
+          <Link
+              to="/"
+              className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white bg-gradient-to-r from-orange-700 via-white to-green-700 p-2 rounded-lg"
             >
-              <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
-                Sahand's
-              </span>
-              Blog
-            </Link>
+        My Modern Blog
+      </Link>
           </div>
           <div className='grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6'>
             <div>
