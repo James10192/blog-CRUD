@@ -5,6 +5,7 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function OAuth() {
     const auth = getAuth(app)
@@ -15,19 +16,14 @@ export default function OAuth() {
         provider.setCustomParameters({ prompt: 'select_account' })
         try {
             const resultsFromGoogle = await signInWithPopup(auth, provider)
-            const res = await fetch('/api/auth/google', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: resultsFromGoogle.user.displayName,
-                    email: resultsFromGoogle.user.email,
-                    googlePhotoUrl: resultsFromGoogle.user.photoURL,
-                }),
-                })
-            const data = await res.json()
-            if (res.ok){
-                dispatch(signInSuccess(data))
-                navigate('/')
+            const res = await axios.post('/api/auth/google', {
+                name: resultsFromGoogle.user.displayName,
+                email: resultsFromGoogle.user.email,
+                googlePhotoUrl: resultsFromGoogle.user.photoURL,
+            });
+            if (res.status === 200 || res.status === 201) {
+                dispatch(signInSuccess(res.data));
+                navigate('/');
             }
         } catch (error) {
             console.log(error);
