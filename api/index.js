@@ -8,6 +8,7 @@ import commentRoutes from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import cors from 'cors';
+import createError from 'http-errors';
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   origin: ['http://localhost:5173', 'https://blog-crud-xo4b.onrender.com'],
-  credentials: true
+  credentials: true,
 }));
 
 app.listen(3000, () => {
@@ -46,14 +47,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
-// Configuration CORS
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://blog-crud-xo4b.onrender.com');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
-
 // Gestion des erreurs pour les requêtes axios
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
@@ -64,11 +57,25 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
-  res.status(statusCode).json({
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  res.status(err.status || 500);
+  res.json({
     success: false,
-    statusCode,
-    message,
+    status: err.status,
+    message: err.message,
+    stack: req.app.get('env') === 'development' ? err.stack : undefined,
   });
+});
+
+// Configuration CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
+app.use((req, res, next) => {
+  next(createError(404));
 });

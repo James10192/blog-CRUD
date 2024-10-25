@@ -25,18 +25,18 @@ export default function SignIn() {
     }
     try {
       dispatch(signInStart());
-      const res = await axios.post('https://blog-crud-xo4b.onrender.com/api/auth/signin', formData);
+      const res = await axios.post('https://blog-crud-xo4b.onrender.com/api/auth/signin', formData, { withCredentials: true });
+      console.log('Server response:', res);
       const data = res.data;
       if (data.success === false) {
         dispatch(signInFailure(data.message));
-      }
-
-      if (res.ok) {
+      } else {
         dispatch(signInSuccess(data));
         navigate('/');
       }
     } catch (error) {
-      dispatch(signInFailure(error.message));
+      console.error('Error during sign in:', error);
+      dispatch(signInFailure(error.response?.data?.message || error.message));
     }
   };
   return (
