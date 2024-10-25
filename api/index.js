@@ -79,3 +79,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   next(createError(404));
 });
+
+window.addEventListener('error', (event) => {
+  console.error('Uncaught error:', event.error);
+});

@@ -21,6 +21,10 @@ import './i18n'; // Assurez-vous d'importer votre configuration i18n
 export default function App() {
   const { t } = useTranslation();
 
+  window.addEventListener('error', (event) => {
+    console.error('Uncaught error:', event.error);
+  });
+
   return (
     <BrowserRouter>
       <ScrollToTop />
