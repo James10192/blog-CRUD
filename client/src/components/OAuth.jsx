@@ -26,13 +26,13 @@ export default function OAuth() {
                 navigate('/');
             }
         } catch (error) {
-            console.log(error);
+            console.log('Erreur lors de la connexion avec Google :', error);
         }
     } 
   return (
     <Button type='button' gradientDuoTone='pinkToOrange' outline onClick={handleGoogleClick}>
         <AiFillGoogleCircle className='w-6 h-6 mr-2'/>
-        Continue with Google
+        Continuer avec Google
     </Button>
   )
 }

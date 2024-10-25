@@ -21,7 +21,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return dispatch(signInFailure('Please fill all the fields'));
+      return dispatch(signInFailure('Veuillez remplir tous les champs'));
     }
     try {
       dispatch(signInStart());
@@ -51,8 +51,8 @@ export default function SignIn() {
         My Modern Blog
       </Link>
           <p className='text-sm mt-5'>
-            This is a demo project. You can sign in with your email and password
-            or with Google.
+            Ceci est la page de connexion. Vous pouvez vous connecter avec votre email et mot de passe
+            ou avec Google.
           </p>
         </div>
         {/* right */}
@@ -60,7 +60,7 @@ export default function SignIn() {
         <div className='flex-1'>
           <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
             <div>
-              <Label value='Your email' />
+              <Label value='Votre email' />
               <TextInput
                 type='email'
                 placeholder='name@company.com'
@@ -69,7 +69,7 @@ export default function SignIn() {
               />
             </div>
             <div>
-              <Label value='Your password' />
+              <Label value='Votre mot de passe' />
               <TextInput
                 type='password'
                 placeholder='**********'
@@ -85,18 +85,18 @@ export default function SignIn() {
               {loading ? (
                 <>
                   <Spinner size='sm' />
-                  <span className='pl-3'>Loading...</span>
+                  <span className='pl-3'>Chargement...</span>
                 </>
               ) : (
-                'Sign In'
+                'Se connecter'
               )}
             </Button>
             <OAuth />
           </form>
           <div className='flex gap-2 text-sm mt-5'>
-            <span>Dont Have an account?</span>
+            <span>Vous n'avez pas de compte ?</span>
             <Link to='/sign-up' className='text-blue-500'>
-              Sign Up
+              S'inscrire
             </Link>
           </div>
           {errorMessage && (
