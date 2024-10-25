@@ -2,6 +2,7 @@ import { Button, Select, TextInput } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PostCard from '../components/PostCard';
+import axios from 'axios';
 
 export default function Search() {
   const [sidebarData, setSidebarData] = useState({
@@ -35,20 +36,15 @@ export default function Search() {
 
     const fetchPosts = async () => {
       setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`https://blog-crud-xo4b.onrender.com/api/post/getposts?${searchQuery}`);      if (!res.ok) {
+      try {
+        const searchQuery = urlParams.toString();
+        const res = await axios.get(`https://blog-crud-xo4b.onrender.com/api/post/getPosts?${searchQuery}`);
+        setPosts(res.data.posts);
         setLoading(false);
-        return;
-      }
-      if (res.ok) {
-        const data = await res.json();
-        setPosts(data.posts);
+        setShowMore(res.data.posts.length === 9);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
         setLoading(false);
-        if (data.posts.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
       }
     };
     fetchPosts();

@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
 import PostCard from '../components/PostCard';
+import axios from 'axios';
 
 export default function PostPage() {
   const { postSlug } = useParams();
@@ -16,18 +17,10 @@ export default function PostPage() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`https://blog-crud-xo4b.onrender.com/api/post/getPosts?slug=${postSlug}`);
-        const data = await res.json();
-        if (!res.ok) {
-          setError(true);
-          setLoading(false);
-          return;
-        }
-        if (res.ok) {
-          setPost(data.posts[0]);
-          setLoading(false);
-          setError(false);
-        }
+        const res = await axios.get(`https://blog-crud-xo4b.onrender.com/api/post/getPosts?slug=${postSlug}`);
+        setPost(res.data.posts[0]);
+        setLoading(false);
+        setError(false);
       } catch (error) {
         setError(true);
         setLoading(false);
@@ -37,18 +30,15 @@ export default function PostPage() {
   }, [postSlug]);
 
   useEffect(() => {
-    try {
-      const fetchRecentPosts = async () => {
-        const res = await fetch(`https://blog-crud-xo4b.onrender.com/api/post/getPosts?limit=3`);
-        const data = await res.json();
-        if (res.ok) {
-          setRecentPosts(data.posts);
-        }
-      };
-      fetchRecentPosts();
-    } catch (error) {
-      console.log(error.message);
-    }
+    const fetchRecentPosts = async () => {
+      try {
+        const res = await axios.get(`https://blog-crud-xo4b.onrender.com/api/post/getPosts?limit=3`);
+        setRecentPosts(res.data.posts);
+      } catch (error) {
+        console.error('Error fetching recent posts:', error);
+      }
+    };
+    fetchRecentPosts();
   }, []);
 
   if (loading)

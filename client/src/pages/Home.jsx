@@ -2,15 +2,19 @@ import { Link } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
+import axios from 'axios';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('https://blog-crud-xo4b.onrender.com/api/post/getPosts');
-      const data = await res.json();
-      setPosts(data.posts);
+      try {
+        const res = await axios.get('https://blog-crud-xo4b.onrender.com/api/post/getPosts');
+        setPosts(res.data.posts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
     };
     fetchPosts();
   }, []);

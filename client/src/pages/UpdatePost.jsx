@@ -13,6 +13,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 export default function UpdatePost() {
   const [file, setFile] = useState(null);
@@ -86,22 +87,15 @@ export default function UpdatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`https://blog-crud-xo4b.onrender.com/api/post/updatepost/${formData._id}/${currentUser._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      const res = await axios.put(`https://blog-crud-xo4b.onrender.com/api/post/updatepost/${formData._id}/${currentUser._id}`, formData);
       if (!res.ok) {
-        setPublishError(data.message);
+        setPublishError(res.data.message);
         return;
       }
 
       if (res.ok) {
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        navigate(`/post/${res.data.slug}`);
       }
     } catch (error) {
       setPublishError('Something went wrong');
