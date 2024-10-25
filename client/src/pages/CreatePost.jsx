@@ -61,8 +61,8 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/post/create', {
-        method: 'POST',
+    const res = await fetch('https://blog-crud-xo4b.onrender.com/api/post/create',
+      { method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },

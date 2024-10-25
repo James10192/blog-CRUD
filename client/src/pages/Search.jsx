@@ -36,8 +36,7 @@ export default function Search() {
     const fetchPosts = async () => {
       setLoading(true);
       const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
-      if (!res.ok) {
+      const res = await fetch(`https://blog-crud-xo4b.onrender.com/api/post/getposts?${searchQuery}`);      if (!res.ok) {
         setLoading(false);
         return;
       }
