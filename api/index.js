@@ -41,6 +41,23 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
+// Configuration CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://blog-crud-xo4b.onrender.com');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
+// Gestion des erreurs pour les requêtes axios
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({ error: 'Unauthorized' });
+  } else {
+    next(err);
+  }
+});
+
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
