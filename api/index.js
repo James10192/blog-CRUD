@@ -7,6 +7,7 @@ import postRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -25,6 +26,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://blog-crud-xo4b.onrender.com'],
+  credentials: true
+}));
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
